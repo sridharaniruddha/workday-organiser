@@ -4,13 +4,13 @@ $("#currentDay").text(currentDate.format('dddd, MMMM D'))
 
 // timeblocks for regular hours and business hours
 function createTimeBlocks() {
-    var container = $(".container");
+    const container = $('.container')
 
     // Current hour/block using day.js
-    var currentHour = day.js().hour();
+    const currentHour = day.js().hour()
 
     //creating array for standard hours and business hours
-    var businessHours = ["9", "10", "11", "12", "1", "2", "3", "4", "5"]
+    const businessHours = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM']
 
 
     // set loop to start from 9-17 hrs
@@ -23,14 +23,16 @@ function createTimeBlocks() {
 
 
     businessHours.forEach((hour, index) => {
-        var timeBlock = $('<div>').addClass('row time-block')
-        var hourCol = $('<div>').addClass('col-md-1 hour').text(hour)
-        var textAreaCol = $('<textarea>').addClass('col-md-10 description')
+        const timeBlock = $('<div>').addClass('row time-block')
+        const hourCol = $('<div>').addClass('col-md-1 hour').text(hour)
+        const textAreaCol = $('<textarea>').addClass('col-md-10 description')
 
         // Append elements to container
         timeBlock.append(hourCol, textAreaCol, saveBtnCol);
         container.append(timeBlock);
+        saveBtnCol.append(saveBtn)
 
+        // assign colours for events
 
         if (index + 9 < currentHour) {
             textAreaCol.addClass('past')
@@ -40,22 +42,22 @@ function createTimeBlocks() {
             textAreaCol.addClass('future')
         }
 
-        // loading old event from local storage 
-        var savedEvent = localStorage.getItem(hour)
+        // Load saved event from local storage
+        const savedEvent = localStorage.getItem(hour)
         if (savedEvent) {
             textAreaCol.val(savedEvent)
         }
 
-        var saveBtnCol = $('<div>').addClass('col-md-1 saveBtn')
-        var saveBtn = $('<i>').addClass('fas fa-save')
+        const saveBtnCol = $('<div>').addClass('col-md-1 saveBtn')
+        const saveBtn = $('<i>').addClass('fas fa-save')
 
-        // click event for save button
+        // click event for saved button
         saveBtn.on('click', function () {
-            var eventText = textAreaCol.val()
+            const eventText = textAreaCol.val()
             localStorage.setItem(hour, eventText)
         })
 
-        saveBtnCol.append(saveBtn)
+
     })
 
     // nested unction for assigning colours to timeblocks based on past/future activity 
@@ -81,13 +83,9 @@ function createTimeBlocks() {
 
     // call nested function
     // colourBlock()
-
-
-
-
     // call for function 
     createTimeBlocks()
 
-
 }
+
 
