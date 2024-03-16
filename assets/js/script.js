@@ -10,8 +10,8 @@ function createTimeBlocks() {
     var currentHour = day.js().hour();
 
     //creating array for standard hours and business hours
-    var businessHours = ["9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"]
-    var hours = ["9", "10", "11", "12", "1", "2", "3", "4", "5"]
+    var businessHours = ["9", "10", "11", "12", "1", "2", "3", "4", "5"]
+
 
     // set loop to start from 9-17 hrs
     // for (let i = 9; i < 17; i++) {
@@ -22,12 +22,15 @@ function createTimeBlocks() {
     // }
 
 
-
-
-    workHours.forEach((hour, index) => {
+    businessHours.forEach((hour, index) => {
         var timeBlock = $('<div>').addClass('row time-block')
         var hourCol = $('<div>').addClass('col-md-1 hour').text(hour)
         var textAreaCol = $('<textarea>').addClass('col-md-10 description')
+
+        // Append elements to container
+        timeBlock.append(hourCol, textAreaCol, saveBtnCol);
+        container.append(timeBlock);
+
 
         if (index + 9 < currentHour) {
             textAreaCol.addClass('past')
@@ -37,29 +40,47 @@ function createTimeBlocks() {
             textAreaCol.addClass('future')
         }
 
+        // loading old event from local storage 
+        var savedEvent = localStorage.getItem(hour)
+        if (savedEvent) {
+            textAreaCol.val(savedEvent)
+        }
 
-    var saveBtnCol = $("<button>")
-        .addClass("col-2 saveBtn")
-        .html('<i class="far fa-save"></i> Save');
+        var saveBtnCol = $('<div>').addClass('col-md-1 saveBtn')
+        var saveBtn = $('<i>').addClass('fas fa-save')
 
-    //24 hour clock format 
-    function formatHour(hour) {
-        return dayjs().hour(hour).format("H"); // single digit 24 hour format 
-    }
+        // click event for save button
+        saveBtn.on('click', function () {
+            var eventText = textAreaCol.val()
+            localStorage.setItem(hour, eventText)
+        })
 
-    // get previous input from local storage 
-    var savedEvent = localStorage.getItem(formatHour(hour));
-    if (savedEvent) {
-        textAreaCol.val(savedEvent);
-    }
+        saveBtnCol.append(saveBtn)
+    })
 
-})
+    // nested unction for assigning colours to timeblocks based on past/future activity 
+    // function colorBlock() {
+    //     var currentTime = dayjs().hour()
 
-    // save information to timeblocks 
+    //     $('.description').each(function () {
+    //         var hourId = parseInt($(this).attr("id"))
+    //         for (var i = 0; i < hours.length; i++) {
+    //             if (hourId === currentTime) {
+    //                 $(this).addClass("present")
+    //                 $(this).removeClass("past, future")
+    //             } else if (hourId < currentTime) {
+    //                 $(this).addClass("past")
+    //                 $(this).removeClass("present, future")
+    //             } else {
+    //                 $(this).addClass("future")
+    //                 $(this).removeClass("past, present")
+    //             }
+    //         }
+    //     })
+    // }
 
-    //save button and event listener 
-
-
+    // call nested function
+    // colourBlock()
 
 
 
@@ -70,4 +91,3 @@ function createTimeBlocks() {
 
 }
 
-//For assigning colours to timeblocks based on past/future activity
