@@ -22,6 +22,8 @@ function createTimeBlocks() {
     // }
 
 
+
+
     workHours.forEach((hour, index) => {
         var timeBlock = $('<div>').addClass('row time-block')
         var hourCol = $('<div>').addClass('col-md-1 hour').text(hour)
@@ -67,3 +69,5 @@ function createTimeBlocks() {
 
 
 }
+
+//For assigning colours to timeblocks based on past/future activity
